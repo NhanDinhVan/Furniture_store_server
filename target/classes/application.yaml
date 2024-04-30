@@ -1,0 +1,23 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /furniture_store_service
+
+spring:
+  application:
+    name: furniture_store_service
+  datasource:
+    url: "jdbc:mysql://localhost:3306/furniture_store_service"
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  signerKey: "r4bg9jhItAtO+7/TnICu1E3bBIoonyY2V5+8kpjwd8+iEsjY/MQ78uKm83Ao8hI3"
+
+logging:
+  level:
+    root: warn
