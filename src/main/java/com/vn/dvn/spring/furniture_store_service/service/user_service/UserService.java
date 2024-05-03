@@ -13,7 +13,7 @@ public interface UserService {
 
     public List<UserResponse> findAllUser();
 
-    public Optional<Users> findByEmail(String email);
+    public UserResponse getMyInfo();
 
     public Users findById(String id);
 

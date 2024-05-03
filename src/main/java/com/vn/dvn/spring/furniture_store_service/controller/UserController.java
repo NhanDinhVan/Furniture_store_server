@@ -10,11 +10,15 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -25,9 +29,17 @@ public class UserController {
     @GetMapping
     public ApiResponse<List<UserResponse>> getAllUser()
     {
-        ApiResponse api = new ApiResponse();
-        api.setResult(service.findAllUser());
-        return api;
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        log.info("UserName: "+ authentication.getName());
+       authentication.getAuthorities().forEach(
+               grantedAuthority -> log.info(grantedAuthority.getAuthority())
+       );
+        log.info("In method get all user");
+
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(service.findAllUser())
+                .build();
     }
 
     @PostMapping
@@ -39,23 +51,20 @@ public class UserController {
         return apiResponse;
     }
 
-    @GetMapping("/email/{email}")
-    public Optional<Users> getUserByEmail(@PathVariable String email)
-    {
-        return service.findByEmail(email);
-    }
-
-    @GetMapping("/{id}")
-    public Users getUserById(@PathVariable String id)
-    {
-        return service.findById(id);
-    }
-
     @PutMapping("/{id}")
-    public ApiResponse<UserResponse> updateUser(@PathVariable  String id, @RequestBody @Valid UserUpdateRequest request)
+    ApiResponse<UserResponse> updateUser(@PathVariable  String id, @RequestBody @Valid UserUpdateRequest request)
     {
         ApiResponse<UserResponse> api = new ApiResponse<>();
         api.setResult(service.updateUser(id, request));
         return api;
+    }
+
+    @GetMapping("/myInfo")
+    ApiResponse<UserResponse> getInfo()
+    {
+        return ApiResponse.<UserResponse>builder()
+                .result(service.getMyInfo())
+                .code(1000)
+                .build();
     }
 }

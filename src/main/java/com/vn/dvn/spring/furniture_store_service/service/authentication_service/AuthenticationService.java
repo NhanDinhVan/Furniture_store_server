@@ -9,6 +9,7 @@ import com.vn.dvn.spring.furniture_store_service.dto.request.user_request.Authen
 import com.vn.dvn.spring.furniture_store_service.dto.request.user_request.IntrospectRequest;
 import com.vn.dvn.spring.furniture_store_service.dto.response.AuthenticationResponse;
 import com.vn.dvn.spring.furniture_store_service.dto.response.IntrospectResponse;
+import com.vn.dvn.spring.furniture_store_service.entity.Users;
 import com.vn.dvn.spring.furniture_store_service.handle_exception.AppException;
 import com.vn.dvn.spring.furniture_store_service.handle_exception.ErrorCode;
 import com.vn.dvn.spring.furniture_store_service.repository.UserRepository;
@@ -16,15 +17,19 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Date;
+import java.util.StringJoiner;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +39,8 @@ public class AuthenticationService {
     @NonFinal
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY ;
+
+    private PasswordEncoder passwordEncoder;
 
     public IntrospectResponse introspect(IntrospectRequest request)
             throws JOSEException, ParseException {
@@ -54,18 +61,16 @@ public class AuthenticationService {
 
 
 
-    //Hàm xác thực email, mật khẩu khi đăng nhập
+    //Hàm xác thực email, mật khau khi dang nhap
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOTFOUND));
-
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
         if(!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
 
-        var token = generateToken(request.getEmail());
+        var token = generateToken(user);
 
         return AuthenticationResponse.builder()
                 .token(token)
@@ -75,20 +80,20 @@ public class AuthenticationService {
     }
 
     //Hàm tạo generate token
-    String generateToken(String username){
+    String generateToken(Users user){
         //Tạo header
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         //Tạo payload
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
+                .subject(user.getEmail())
                 .issuer("dvn.com")
                 .issueTime(new Date()) //Thời gian khởi tạo
                 .expirationTime(new Date(
                         //Thời gian hết hạn
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
                 ))
-                .claim("customClaim", "Custom")
+                .claim("scope", buildScope(user))
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
 
@@ -105,5 +110,14 @@ public class AuthenticationService {
             System.out.println("Cannot create token" + e);
             throw new RuntimeException(e);
         }
+    }
+
+    private String buildScope(Users user)
+    {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if(user.getRole()!=null){
+            stringJoiner.add(user.getRole());
+        }
+        return stringJoiner.toString();
     }
 }

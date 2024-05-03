@@ -17,7 +17,3 @@ spring:
 
 jwt:
   signerKey: "r4bg9jhItAtO+7/TnICu1E3bBIoonyY2V5+8kpjwd8+iEsjY/MQ78uKm83Ao8hI3"
-
-logging:
-  level:
-    root: warn

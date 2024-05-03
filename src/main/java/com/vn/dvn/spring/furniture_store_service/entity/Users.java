@@ -4,11 +4,15 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Entity
+import java.util.Set;
+
+
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "user")
 public class Users {
@@ -44,17 +48,4 @@ public class Users {
 
     @Column(name = "state", length = 50)
     String state;
-
-    public Users(String name, String address, String gender, int purchased, String email, String phoneNumber, String password, String role, String state) {
-        this.name = name;
-        this.address = address;
-        this.gender = gender;
-        this.purchased = purchased;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.role = role;
-        this.state = state;
-    }
-
 }
