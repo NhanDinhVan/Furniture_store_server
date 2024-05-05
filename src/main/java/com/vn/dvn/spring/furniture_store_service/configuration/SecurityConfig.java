@@ -28,10 +28,23 @@ import java.nio.charset.StandardCharsets;
 public class SecurityConfig {
 
     @NonFinal
-    private final String[] PUBLIC_ENDPOINTS = {
+    private final String[] PUBLIC_POST_ENDPOINTS = {
             "/v1",
             "/v1/auth/token",
-            "/v1/auth/introspect"
+            "/v1/auth/introspect",
+            "/products"
+    };
+
+    @NonFinal
+    private final String[] PUBLIC_GET_ENDPOINTS = {
+            "/products",
+            "/products/{id}"
+
+    };
+    @NonFinal
+    private final String[] PUBLIC_PUT_ENDPOINTS = {
+            "/products",
+            "/products/{id}"
     };
 
     @Value("${jwt.signerKey}")
@@ -42,7 +55,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception
     {
         httpSecurity.authorizeHttpRequests(request->
-                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                request.requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET,PUBLIC_GET_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.PUT,PUBLIC_PUT_ENDPOINTS).permitAll()
                         .anyRequest().authenticated());
 
         httpSecurity.oauth2ResourceServer(oauth2->
