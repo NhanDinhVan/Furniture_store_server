@@ -15,6 +15,7 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006,"Unauthenticated !",HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007,"You do not have permission !", HttpStatus.FORBIDDEN),
     PRODUCT_NOTEXIST(1008,"Product not exist !",HttpStatus.NOT_FOUND),
+    DUPLICATESD_VALUES(1008,"Value in list is duplicated !",HttpStatus.BAD_REQUEST)
 
     ;
     private int code = 1000;

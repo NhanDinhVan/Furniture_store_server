@@ -32,19 +32,19 @@ public class SecurityConfig {
             "/v1",
             "/v1/auth/token",
             "/v1/auth/introspect",
-            "/products"
+            "/v1/products"
     };
 
     @NonFinal
     private final String[] PUBLIC_GET_ENDPOINTS = {
-            "/products",
-            "/products/{id}"
+            "/v1/products",
+            "/v1/products/{id}"
 
     };
     @NonFinal
     private final String[] PUBLIC_PUT_ENDPOINTS = {
-            "/products",
-            "/products/{id}"
+            "/v1/products",
+            "/v1/products/{id}"
     };
 
     @Value("${jwt.signerKey}")
