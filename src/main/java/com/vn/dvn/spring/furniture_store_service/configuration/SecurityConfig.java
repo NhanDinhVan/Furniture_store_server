@@ -38,7 +38,9 @@ public class SecurityConfig {
     @NonFinal
     private final String[] PUBLIC_GET_ENDPOINTS = {
             "/v1/products",
-            "/v1/products/{id}"
+            "/v1/products/{id}",
+            "/v1/products/top/{top}",
+            "/v1/category"
 
     };
     @NonFinal

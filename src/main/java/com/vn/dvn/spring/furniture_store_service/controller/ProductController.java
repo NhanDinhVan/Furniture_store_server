@@ -8,6 +8,7 @@ import com.vn.dvn.spring.furniture_store_service.service.product_service.Product
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
 import java.util.List;
 
 @RestController
@@ -52,4 +53,12 @@ public class ProductController {
                 .build();
     }
 
+    @GetMapping("/top/{top}")
+    public ApiResponse<List<Products>> getByTopSales(@PathVariable int top)
+    {
+        return ApiResponse.<List<Products>>builder()
+                .result(service.findBySales(top))
+                .code(1000)
+                .build();
+    }
 }

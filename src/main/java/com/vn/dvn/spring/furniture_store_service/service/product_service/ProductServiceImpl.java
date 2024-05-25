@@ -11,6 +11,8 @@ import com.vn.dvn.spring.furniture_store_service.repository.ProductRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class ProductServiceImpl implements ProductService{
         Products product = mapper.toProduct(request);
         product.setView(0);
         product.setSold(0);
-        product.setImagePath(image_path+mapper.toProduct(request).getImagePath());
+        product.setImagePath(mapper.toProduct(request).getImagePath());
         product.setState(State.ENABLE.toString());
         return repository.save(product);
     }
@@ -53,6 +55,13 @@ public class ProductServiceImpl implements ProductService{
         product.setView(product.getView()+1);
         repository.save(product);
         return product;
+    }
+
+    @Override
+    public List<Products> findBySales(int top) {
+        Pageable pageable = PageRequest.of(0, top);
+
+        return repository.findByTopSales(pageable);
     }
 
     @Override
