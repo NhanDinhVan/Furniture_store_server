@@ -1,5 +1,7 @@
 package com.vn.dvn.spring.furniture_store_service.dto.request.product_request;
 
+import com.vn.dvn.spring.furniture_store_service.entity.Brands;
+import com.vn.dvn.spring.furniture_store_service.entity.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,13 +22,15 @@ public class ProductCreationRequest {
 
     String description;
 
+    Category category;
+
     Float price;
 
     int quantity;
 
     String imagePath;
 
-    String brand;
+    Brands brand;
 
     Float discount;
 

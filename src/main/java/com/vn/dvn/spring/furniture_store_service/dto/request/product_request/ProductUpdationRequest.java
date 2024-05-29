@@ -1,5 +1,7 @@
 package com.vn.dvn.spring.furniture_store_service.dto.request.product_request;
 
+import com.vn.dvn.spring.furniture_store_service.entity.Brands;
+import com.vn.dvn.spring.furniture_store_service.entity.Category;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,7 +21,9 @@ public class ProductUpdationRequest {
 
     String imagePath;
 
-    String brand;
+    Category category;
+
+    Brands brand;
 
     Float discount;
 

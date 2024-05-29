@@ -1,24 +1,24 @@
 package com.vn.dvn.spring.furniture_store_service.mapper;
 
-import com.vn.dvn.spring.furniture_store_service.dto.request.cart_request.CartRequest;
-import com.vn.dvn.spring.furniture_store_service.entity.Carts;
+import com.vn.dvn.spring.furniture_store_service.dto.request.brand_request.OtherBrandRequest;
+import com.vn.dvn.spring.furniture_store_service.entity.Brands;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-26T14:59:03+0700",
+    date = "2024-05-26T14:59:04+0700",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 20.0.1 (Oracle Corporation)"
 )
 @Component
-public class CartMapperImpl implements CartMapper {
+public class BrandMapperImpl implements BrandMapper {
 
     @Override
-    public void toUpdateCart(Carts cart, CartRequest request) {
+    public void toUpdateBrand(Brands brand, OtherBrandRequest request) {
         if ( request == null ) {
             return;
         }
 
-        cart.setQuantity( request.getQuantity() );
+        brand.setName( request.getName() );
     }
 }

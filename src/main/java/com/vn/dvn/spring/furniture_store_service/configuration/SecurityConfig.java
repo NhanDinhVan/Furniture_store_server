@@ -32,7 +32,8 @@ public class SecurityConfig {
             "/v1",
             "/v1/auth/token",
             "/v1/auth/introspect",
-            "/v1/products"
+            "/v1/products",
+            "/v1/brands"
     };
 
     @NonFinal
@@ -40,7 +41,8 @@ public class SecurityConfig {
             "/v1/products",
             "/v1/products/{id}",
             "/v1/products/top/{top}",
-            "/v1/category"
+            "/v1/category",
+            "/v1/brands"
 
     };
     @NonFinal

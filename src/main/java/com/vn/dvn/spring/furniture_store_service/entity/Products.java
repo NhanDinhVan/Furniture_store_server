@@ -42,9 +42,13 @@ public class Products {
     @Column(name = "image_path")
     String imagePath;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    Category category;
 
-    @Column(name = "brand", length = 255)
-     String brand;
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    Brands brand;
 
     @Column(name = "view", length = 11)
      int view;
